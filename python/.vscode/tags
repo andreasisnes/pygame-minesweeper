@@ -1,0 +1,23 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/3fdf28bc/
+TestIntegration	../tests/test_integration.py	/^class TestIntegration(unittest.TestCase):$/;"	kind:class	line:10
+TestUnit	../tests/test_unit.py	/^class TestUnit(unittest.TestCase):$/;"	kind:class	line:10
+__init__.py	../app/__init__.py	1;"	kind:file	line:1
+__main__.py	../app/__main__.py	1;"	kind:file	line:1
+context.py	../tests/context.py	1;"	kind:file	line:1
+init	../app/__main__.py	/^def init(mainf):$/;"	kind:function	line:7
+initf	../app/__main__.py	/^    def initf():$/;"	kind:function	line:9
+main	../app/__main__.py	/^def main():$/;"	kind:function	line:26
+read	../setup.py	/^def read(fname):$/;"	kind:function	line:7
+setup	../app/__main__.py	/^def setup():$/;"	kind:function	line:15
+setup.py	../setup.py	1;"	kind:file	line:1
+teardown	../app/__main__.py	/^def teardown():$/;"	kind:function	line:21
+test_absolute_truth_and_meaning	../tests/test_unit.py	/^    def test_absolute_truth_and_meaning(self):$/;"	kind:member	line:13
+test_integration.py	../tests/test_integration.py	1;"	kind:file	line:1
+test_thoughts	../tests/test_integration.py	/^    def test_thoughts(self):$/;"	kind:member	line:13
+test_unit.py	../tests/test_unit.py	1;"	kind:file	line:1

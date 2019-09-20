@@ -1,0 +1,6 @@
+pytest
+pytest-cov
+setuptools
+pylint
+twine
+pygame
