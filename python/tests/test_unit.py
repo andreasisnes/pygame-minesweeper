@@ -15,6 +15,7 @@ class TestUnit(unittest.TestCase):
         self.height = random.randint(10, 100)
         self.width  = random.randint(10, 100)
         self.mines  = random.randint(10, 90)
+        self.iter   = 100 
         self.api = app.API(self.width, self.height, self.mines)
         self.assertEqual(self.width, self.api.width)
         self.assertEqual(self.mines, self.api.mines)
@@ -45,7 +46,7 @@ class TestUnit(unittest.TestCase):
         self.assertEqual(len(self.api._sheet[0]), self.api.width)
     
     def test_tile_open(self):
-        for _ in range(100):
+        for _ in range(self.iter):
             self.height = random.randint(10, 100)
             self.width  = random.randint(10, 100)
             self.mines  = random.randint((self.width * self.height) // 2, (self.width * self.height) - 10)
@@ -65,12 +66,40 @@ class TestUnit(unittest.TestCase):
                 for j in [x+1, x-1]:
                     if self.api.tile_valid(i, j):
                         self.assertNotEqual(self.api.board[i][j], self.api.encoder.num_mine)
-        
-
-
     
     def test_playing(self):
-        pass
+        for _ in range(self.iter):
+            self.height = random.randint(10, 100)
+            self.width  = random.randint(10, 100)
+            self.mines  = random.randint((self.width * self.height) // 2, (self.width * self.height) - 10)
+            self.api.game_new(self.width, self.height, self.mines)
+            self.assertEqual(self.api.timer, 0.0)
+            game_over = False
+            for y in range(0, self.height):
+                for x in range(0, self.width):
+                    tiles = self.api.tile_open(x, y)
+                    for tile in tiles:
+                        if self.api.encoder.is_mine(tile['value']):
+                            self.assertTrue(self.api.encoder.is_mine(self.api.sheet[tile['y']][tile['x']]))
+                            self.assertTrue(self.api.is_game_over)
+                    if game_over:
+                        self.assertEqual(len(tiles), 0)
+                    if game_over == False and self.api.is_game_over:
+                        game_over = True
+            self.assertGreater(self.api.timer, 0)
+
+    def test_finish(self):
+        for _ in range(self.iter):
+            self.height = random.randint(10, 100)
+            self.width  = random.randint(10, 100)
+            self.mines  = random.randint((self.width * self.height) // 2, (self.width * self.height) - 10)
+            self.api.game_new(self.width, self.height, self.mines)
+            self.api.tile_open(0, 0)
+            for y in range(0, self.height):
+                for x in range(0, self.width):
+                    if not self.api.encoder.is_mine(self.api.sheet[y][x]):
+                        self.api.tile_open(y, x)
+            self.assertTrue(self.api.is_game_done)
     
 
 class TestEncoder(unittest.TestCase):

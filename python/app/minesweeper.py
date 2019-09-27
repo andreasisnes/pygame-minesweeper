@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Minesweeper """
 import random
+import time
 
 def valid_arguments(fn):
     def init(self, width, height, mines):
@@ -22,6 +23,8 @@ def valid_attempt(fn):
         if not self.tile_valid(y, x):
             return []
         if not self.encoder.is_tile(self._board[y][x]):
+            return []
+        if self._is_game_done:
             return []
         if self._opened == 0:
             self._sheet_init(y, x)
@@ -62,7 +65,9 @@ class API:
         self._sheet = self._generate_sheet()
         
         self._is_game_over = False
+        self._is_game_done = False
         self._opened = 0
+        self._timer = time.time()
     
     def game_new(self, width, height, mines):
         """ Generates a new game with different settings.
@@ -104,6 +109,7 @@ class API:
         return [[mines[(y * self.width) + x] for x in range(self.width)] for y in range(self.height)]
     
     def _sheet_init(self, pos_y, pos_x):
+        # Make sure the user never hits a mine on the first opened tile
         for y in [pos_y + 1, pos_y - 1, pos_y]:
             for x in [pos_x + 1, pos_x - 1, pos_x]:
                 if self.tile_valid(y, x) and self.encoder.is_mine(self._sheet[y][x]):
@@ -114,6 +120,14 @@ class API:
                         j = random.randint(0, self.width - 1)
                     self._sheet[i][j] = Encoder.num_mine
                     self._sheet[y][x] = 0
+        
+        # make sure to reset sheet except newly created mines
+        for y in range(0, self.height):
+            for x in range(0, self.width):
+                if not self.encoder.is_mine(self._sheet[y][x]):
+                    self._sheet[y][x] = 0
+        
+        # calculate the numeric score of each tile 
         for y in range(0, self.height):
             for x in range(0, self.width):
                 if not self.encoder.is_mine(self._sheet[y][x]):
@@ -121,6 +135,7 @@ class API:
                         for j in [x, x+1, x-1]:
                             if self.tile_valid(i, j) and self.encoder.is_mine(self._sheet[i][j]):
                                 self._sheet[y][x] += 1
+        self._timer = time.time()
     @valid_attempt
     def tile_open(self, y, x):
         """ Opens a tile based on given coordinate. """
@@ -128,6 +143,8 @@ class API:
         tile = {'value': self._sheet[y][x], 'x': x, 'y': y}
         self._board[y][x] = tile['value']
         self._opened += 1
+        if (self._opened + self.mines) == (self.width * self.height):
+            self._is_game_done = True 
         if self.encoder.is_mine(tile['value']):
             self._is_game_over = True
         elif tile['value'] >= 0:
@@ -143,11 +160,17 @@ class API:
                 for j in [x, x+1, x-1]:
                     if self.tile_valid(i, j) and self.encoder.is_tile(self._board[i][j]):
                         self._opened += 1
+                        if (self._opened + self.mines) == (self.width * self.height):
+                            self._is_game_done = True 
                         self._board[i][j] = self._sheet[i][j]
                         opened.append({'value': self._sheet[i][j], 'x': j, 'y': i})
                         if self._sheet[i][j] == 0:
                             self._tile_open_adjacent(i, j, opened)
         return opened
+
+    @property
+    def timer(self):
+        return time.time() - self._timer if self._opened > 0 else 0.0
 
     def tile_valid(self, y, x):
         """ Check if given coordinate is within bound. """
@@ -157,6 +180,11 @@ class API:
     def is_game_over(self):
         """ Returns True if game is over False otherwise. """
         return self._is_game_over
+    
+    @property
+    def is_game_done(self):
+        """ Returns True if game is over False otherwise. """
+        return self._is_game_done
 
     @property
     def board(self):
