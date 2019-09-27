@@ -1,5 +1,5 @@
 import pygame
-
+from functools import reduce
 try:
     import sprites
     import minesweeper
@@ -9,9 +9,11 @@ except ImportError:
 
 class Board:
     def __init__(self, api, screen, color=True):
-        self.modules = [BoardGame(api, y_offset=40), BoardScore(api), BoardFace(api, self.game_reset)]
+        self.board_game = BoardGame(api, y_offset=40)
+        self.board_score = BoardScore(api, self.board_game.marked, 8, 8)
+        self.board_face = BoardFace(api, self.game_reset)
+        self.modules = [self.board_game, self.board_face, self.board_score]
         screen.fill((192, 192, 192))
-        
         self.draw(screen)
 
     def create_frame(self, screen):
@@ -34,15 +36,38 @@ class Board:
             m.game_reset()
 
 class BoardScore:
-    def __init__(self, api):
+    def __init__(self, api, marked, x_offset=8, y_offset=8):
         self.api = api
         self.scores = sprites.Score()
+        self.x_score = x_offset
+        self.y_score = y_offset
+        self.x_timer = ((self.api.width * 16) - x_offset) - self.scores.width * 3
+        self.y_timer = y_offset
+        self.marked = marked
 
     def game_reset(self):
-        self.__init__(self.api)
+        self.__init__(self.api, self.marked, self.x_score, self.y_score)
     
     def draw(self, screen):
-        pass
+        self.draw_score(screen)
+        self.draw_timer(screen)
+
+    def draw_timer(self, screen):
+        tiles = str(int(self.api.timer)).zfill(3)
+        if len(tiles) > 3:
+            tiles = "999"
+        for x in range(0, 3):
+            screen.blit(self.scores[tiles[x]], (self.x_timer + x * self.scores.width, self.y_timer))
+
+    def draw_score(self, screen):
+        marked = self.marked()
+        if marked < 0:
+            marked = 0
+        tiles = str(int(marked)).zfill(3)
+        if len(tiles) > 3:
+            tiles = "999"
+        for x in range(0, 3):
+            screen.blit(self.scores[tiles[x]], (self.x_score + x * self.scores.width, self.y_score))
 
     def mouse_up(self, event):
         pass
@@ -126,6 +151,13 @@ class BoardGame:
                 else:
                     if tile == self.tiles['f']:
                         self.board[y][x] = self.tiles['fx']
+    def game_done(self):
+        for y in range(self.api.height):
+            for x in range(self.api.width):
+                if self.api.encoder.is_tile(self.api.sheet[y][x]):
+                    self.board[y][x] = self.tiles['*?']
+                else:
+                    self.board[y][x] = self.tiles[self.api.encoder.num2ascii(self.api.sheet[y][x])]
 
     def draw(self, screen):
         for y, row in enumerate(self.board):
@@ -173,11 +205,20 @@ class BoardGame:
                         self.game_over()
             elif self.board[y][x] == self.tiles['*?']:
                 self.board[y][x] = self.tiles[self.api.encoder.ascii_tile]
+        if self.api.is_game_done:
+            self.game_done()
         
         self.click = None
     
+    def marked(self):
+        c = 0
+        for row in self.board:
+            c += row.count(self.tiles['f'])
+        return self.api.mines - c
+    
     def mouse_up_right(self, y, x):
-        pass
+        if self.api.is_game_done:
+            self.game_done()
 
     def mouse_down(self, event):
         y, x = self.mouse_tile(event.pos)
@@ -192,6 +233,6 @@ class BoardGame:
             self.mouse_up_left(y, x)
         elif event.button == 3:
             self.mouse_up_right(y, x)
-
+    
     def mouse_tile(self, pos):
         return ((pos[1] - self.y_offset) // 16, (pos[0] - self.x_offset)// 16)

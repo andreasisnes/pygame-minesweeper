@@ -106,9 +106,9 @@ class Score(Spritesheet):
     """ Score """
     def __init__(self, color=True):
         if color:
-            super().__init__(join(dirname(__file__), "color_face.png"))
+            super().__init__(join(dirname(__file__), "color_scoreboard.png"))
         else:
-            super().__init__(join(dirname(__file__), "bw_face.png"))
+            super().__init__(join(dirname(__file__), "bw_scoreboard.png"))
 
         images = self.load_grid((10, 1))
         self.images = {

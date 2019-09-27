@@ -58,7 +58,9 @@ def main():
     some doc
     """
     done = False
+    rate = 0
     while not done:
+        rate %= 30
         clock.tick(60)
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -68,12 +70,14 @@ def main():
                     done = True
             if event.type == MOUSEBUTTONDOWN:
                 board.mouse_down(event)
-                board.draw(screen)
-
+                rate = 0
             if event.type == MOUSEBUTTONUP:
                 board.mouse_up(event)
-                board.draw(screen)
-        pygame.display.flip()
+                rate = 0
+        if rate == 0:
+            board.draw(screen)
+            pygame.display.flip()
+        rate += 1
 
 if __name__ == "__main__":
     main()

@@ -68,6 +68,7 @@ class API:
         self._is_game_done = False
         self._opened = 0
         self._timer = time.time()
+        self._timer1= time.time()
     
     def game_new(self, width, height, mines):
         """ Generates a new game with different settings.
@@ -144,9 +145,11 @@ class API:
         self._board[y][x] = tile['value']
         self._opened += 1
         if (self._opened + self.mines) == (self.width * self.height):
-            self._is_game_done = True 
+            self._is_game_done = True
+            self._timer1 = time.time()
         if self.encoder.is_mine(tile['value']):
             self._is_game_over = True
+            self._timer1 = time.time()
         elif tile['value'] >= 0:
             if tile['value'] == 0:
                 return self._tile_open_adjacent(y, x, [tile])
@@ -161,7 +164,8 @@ class API:
                     if self.tile_valid(i, j) and self.encoder.is_tile(self._board[i][j]):
                         self._opened += 1
                         if (self._opened + self.mines) == (self.width * self.height):
-                            self._is_game_done = True 
+                            self._is_game_done = True
+                            self._timer1 = time.time()
                         self._board[i][j] = self._sheet[i][j]
                         opened.append({'value': self._sheet[i][j], 'x': j, 'y': i})
                         if self._sheet[i][j] == 0:
@@ -170,6 +174,8 @@ class API:
 
     @property
     def timer(self):
+        if self.is_game_over or self.is_game_done:
+            return self._timer1 - self._timer if self._opened > 0 else 0.0
         return time.time() - self._timer if self._opened > 0 else 0.0
 
     def tile_valid(self, y, x):
