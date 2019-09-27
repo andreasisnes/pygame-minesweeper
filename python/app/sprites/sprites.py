@@ -2,6 +2,7 @@
 
 from os.path import join, dirname
 import pygame
+import copy
 
 class Spritesheet:
     """ Spritesheet """
@@ -46,18 +47,18 @@ class Spritesheet:
 
 class Tile(Spritesheet):
     """ Tile """
-    def  __init__(self, color=True):
+    def  __init__(self, api, color=True):
         if color:
             super().__init__(join(dirname(__file__), "color_tiles.png"))
         else:
             super().__init__(join(dirname(__file__), "bw_tiles.png"))
         images = self.load_grid((8, 2))
         self.images = {
-            't'  : images[0],
+            api.encoder.ascii_tile      : images[0],
+            api.encoder.ascii_mine      : images[5],
             'f'  : images[2],
             '?'  : images[3],
             '*?' : images[4],
-            'x' : images[5],
             '*x' : images[6],
             'fx' : images[7],
 
@@ -72,8 +73,11 @@ class Tile(Spritesheet):
             '7' : images[14],
             '8' : images[15],
         }
-    def __getitem__(self, face):
-        return self.images[face]
+        self.width = images[0].get_width()
+        self.height = images[0].get_height()
+
+    def __getitem__(self, tile):
+        return self.images[tile]
 
 
 class Face(Spritesheet):
@@ -91,6 +95,8 @@ class Face(Spritesheet):
             'B)'  : images[3],
             'x('  : images[4],
         }
+        self.width = images[0].get_width()
+        self.height = images[0].get_height()
     def __getitem__(self, face):
         return self.images[face]
 
@@ -117,5 +123,7 @@ class Score(Spritesheet):
             '8' : images[8],
             '9' : images[9],
         }
+        self.width = images[0].get_width()
+        self.height = images[0].get_height()
     def __getitem__(self, number):
         return self.images[str(number)]

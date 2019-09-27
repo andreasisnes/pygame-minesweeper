@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 """ Minesweeper """
-
+import sys
+sys.stdout = None
 import pygame
+sys.stdout = sys.__stdout__
+import argparse
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, MOUSEBUTTONUP, MOUSEBUTTONDOWN
 
 try:
@@ -20,16 +23,33 @@ def init(mainf):
     return initf
 
 def setup():
-    """ setup hook runs before main """
+    global board, resolution, screen, mines, clock, width, height
+    parser = argparse.ArgumentParser(description="""
+    Minesweeper
+
+    basic        : (10x10) - 10
+    intermediate : (16x16) - 40
+    expert       : (30x16) - 99
+    """, formatter_class=argparse.RawTextHelpFormatter)
+    parser.add_argument("difficulty", choices=["basic", "intermediate", "expert"], help="")
+    parser.add_argument("--no-color", action="store_false", help="")
+    args = parser.parse_args()
+    if args.difficulty == "basic":
+        width, height, mines = 10, 10, 10
+    elif args.difficulty == "intermediate":
+        width, height, mines = 16, 16, 40
+    else:
+        width, height, mines = 30, 16, 99
+    
     pygame.init()
     pygame.font.init()
     pygame.display.set_caption("Minesweeper")
-    global resolution, screen
-    resolution = (512, 512)
+    resolution = (width * 16, height * 16 + 40)
     screen = pygame.display.set_mode(resolution)
+    clock = pygame.time.Clock()
+    board = Board(API(width, height, mines), screen)
 
 def teardown():
-    """ teardown hook runs after main """
     pygame.quit()
 
 @init
@@ -37,10 +57,7 @@ def main():
     """
     some doc
     """
-    board = Board(API(20, 10, 30))
-    clock = pygame.time.Clock()
     done = False
-    board.draw(screen)
     while not done:
         clock.tick(60)
         for event in pygame.event.get():
@@ -56,7 +73,6 @@ def main():
             if event.type == MOUSEBUTTONUP:
                 board.mouse_up(event)
                 board.draw(screen)
-
         pygame.display.flip()
 
 if __name__ == "__main__":

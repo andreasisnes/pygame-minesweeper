@@ -214,7 +214,7 @@ class API:
         return "\n".join(["".join([f"{(self.encoder[tile]):2}" for tile in row]).rstrip() for row in self._board])
 
 class Encoder:
-    ascii_tile = '?'
+    ascii_tile = 't'
     ascii_mine = 'x'
     num_tile = -1
     num_mine = -2
