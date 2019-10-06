@@ -137,6 +137,7 @@ class API:
                             if self.tile_valid(i, j) and self.encoder.is_mine(self._sheet[i][j]):
                                 self._sheet[y][x] += 1
         self._timer = time.time()
+    
     @valid_attempt
     def tile_open(self, y, x):
         """ Opens a tile based on given coordinate. """

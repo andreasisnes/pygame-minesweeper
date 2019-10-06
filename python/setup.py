@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from os import environ
 from os.path import join, dirname
 from setuptools import setup, find_packages
 
@@ -10,13 +11,13 @@ def read(fname):
 
 setup(
     # Package
-    name="Python_Project_Layout",
+    name=environ["PROJECT_NAME"],
     version="0.0",
     packages=find_packages(exclude=("tests")),
-    url="https://github.com/aisnes/python-project-template",
+    url="https://github.com/aisnes/minesweeper",
     install_requires=[],
     entry_points={
-        "console_scripts": ["python-project-layout=app.__main__:main"],
+        "console_scripts": ["minesweeper=app.__main__:main"],
     },
     zip_safe=False,
     
@@ -25,7 +26,7 @@ setup(
     author_email="andnil94@gmail.com",
     
     # Description
-    description="A template for python projects",
+    description="Minesweeper implementation in Python",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     classifiers=[

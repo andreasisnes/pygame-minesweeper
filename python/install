@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(
+        prog="Minesweeper",
+        description="install script for python",
+        epilog="epilog",
+    )
+
+if __name__ == "__main__":
+    main()

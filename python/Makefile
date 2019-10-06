@@ -1,6 +1,6 @@
 .PHONY: all run egg test coverage install uninstall clean
 
-NAME=Python_Project_Layout
+NAME=minesweeper
 
 all: run
 
@@ -23,7 +23,7 @@ coverage:
 	@pytest --cov=app tests/
 
 install:
-	@pip install .
+	@python setup.py install --user
 
 uninstall:
 	@pip uninstall $(NAME)
