@@ -11,8 +11,8 @@ def read(fname):
 
 setup(
     # Package
-    name="minesweeper",
-    version="0.0",
+    name="pygame-minesweeper",
+    version="1.1",
     packages=find_packages(exclude=("tests", "screenshots")),
     url="https://github.com/andreasisnes/minesweeper",
     install_requires=["pygame"],
@@ -20,6 +20,7 @@ setup(
         "console_scripts": ["minesweeper=minesweeper.__main__:main"],
     },
     zip_safe=False,
+    include_package_data=True,
     
     # Contact
     author="Andreas Isnes Nilsen",
