@@ -1,6 +1,4 @@
-.PHONY: all run egg test coverage install uninstall clean
-
-NAME=minesweeper
+.PHONY: all run egg test coverage clean
 
 all: run
 
@@ -13,7 +11,7 @@ dep:
 egg:
 	@python setup.py sdist bdist_wheel
 
-egg_check: egg
+egg-check: egg
 	@twine check dist/*
 
 test:
@@ -22,16 +20,10 @@ test:
 coverage:
 	@pytest --cov=app tests/
 
-install:
-	@python setup.py install --user
-
-uninstall:
-	@pip uninstall $(NAME)
-
-pypi_test: egg
+pypi-test: egg egg-check
 	@twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-pypi_prod: egg
+pypi-prod: egg egg-check
 	@twine upload dist/*
 
 clean:

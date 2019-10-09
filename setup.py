@@ -11,22 +11,22 @@ def read(fname):
 
 setup(
     # Package
-    name=environ["PROJECT_NAME"],
+    name="minesweeper",
     version="0.0",
-    packages=find_packages(exclude=("tests")),
-    url="https://github.com/aisnes/minesweeper",
-    install_requires=[],
+    packages=find_packages(exclude=("tests", "screenshots")),
+    url="https://github.com/andreasisnes/minesweeper",
+    install_requires=["pygame"],
     entry_points={
-        "console_scripts": ["minesweeper=app.__main__:main"],
+        "console_scripts": ["minesweeper=minesweeper.__main__:main"],
     },
     zip_safe=False,
     
     # Contact
     author="Andreas Isnes Nilsen",
-    author_email="andnil94@gmail.com",
+    author_email="andreas.isnes@gmail.com",
     
     # Description
-    description="Minesweeper implementation in Python",
+    description="Minesweeper game implemented in python using pygame",
     long_description=read("README.md"),
     long_description_content_type="text/markdown",
     classifiers=[

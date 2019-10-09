@@ -1,0 +1,3 @@
+[console_scripts]
+minesweeper = minesweeper.__main__:main
+
