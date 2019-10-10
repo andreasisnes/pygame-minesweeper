@@ -20,10 +20,10 @@ test:
 coverage:
 	@pytest --cov=app tests/
 
-pypi-test: egg egg-check
+pypi-test: egg-check
 	@twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-pypi-prod: egg egg-check
+pypi-prod: egg-check
 	@twine upload dist/*
 
 clean:
