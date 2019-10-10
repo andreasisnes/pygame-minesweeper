@@ -6,11 +6,11 @@ Minesweeper is a single-player puzzle computer game. The objective of the game i
 
 
 ## Install
-To install pygame-minesweeper use `pip`.
+To install pygame-minesweeper use `pip`.<br/>
 `python -m pip install --user pygame-minesweeper`
 
 ## Run
-To run the game, type following.
+To run the game, type following.<br/>
 `minesweeper <basic | intermediate | expert>`
 
 ### Boards
