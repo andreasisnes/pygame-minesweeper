@@ -3,7 +3,7 @@ Minesweeper is a single-player puzzle computer game. The objective of the game i
 
 ![](https://raw.githubusercontent.com/andreasisnes/minesweeper/master/screenshots/ingame.png)
 
-This implementation of minesweeper is done in Python using the external game library pygame.
+This implementation of minesweeper is done in Python using the game library pygame.
 
 ## Install
 To install pygame-minesweeper use `pip`.<br/>
