@@ -40,7 +40,7 @@ def setup():
         width, height, mines = 16, 16, 40
     else:
         width, height, mines = 30, 16, 99
-    
+
     pygame.init()
     pygame.font.init()
     pygame.display.set_caption("Minesweeper")

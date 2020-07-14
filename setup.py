@@ -21,11 +21,11 @@ setup(
     },
     zip_safe=False,
     include_package_data=True,
-    
+
     # Contact
     author="Andreas Isnes Nilsen",
     author_email="andreas.isnes@gmail.com",
-    
+
     # Description
     description="Minesweeper game implemented in python using pygame",
     long_description=read("README.md"),

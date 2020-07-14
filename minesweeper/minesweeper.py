@@ -34,11 +34,11 @@ def valid_attempt(fn):
 
 class API:
     """ API """
-    
+
     @valid_arguments
     def __init__(self, width, height, mines):
         """ Generates a minesweeper game.
-        
+
         Parameters
         ----------
         width : int
@@ -47,7 +47,7 @@ class API:
             height of player's board
         mines : int
             number of mines placed randomly on the player's board
-        
+
         Raises
         ------
         ValueError
@@ -56,23 +56,23 @@ class API:
             If arguments are not numbers
         """
         self.encoder = Encoder()
-        
+
         self._width = width
         self._height = height
         self._mines = mines
 
         self._board = self._generate_board()
         self._sheet = self._generate_sheet()
-        
+
         self._is_game_over = False
         self._is_game_done = False
         self._opened = 0
         self._timer = time.time()
         self._timer1= time.time()
-    
+
     def game_new(self, width, height, mines):
         """ Generates a new game with different settings.
-        
+
         Parameters
         ----------
         width : int
@@ -81,7 +81,7 @@ class API:
             height of player's board
         mines : int
             number of mines placed randomly on the player's board
-        
+
         Raises
         ------
         ValueError
@@ -108,7 +108,7 @@ class API:
                 tile = random.randint(0, len(mines) - 1)
             mines[tile] = Encoder.num_mine
         return [[mines[(y * self.width) + x] for x in range(self.width)] for y in range(self.height)]
-    
+
     def _sheet_init(self, pos_y, pos_x):
         # Make sure the user never hits a mine on the first opened tile
         for y in [pos_y + 1, pos_y - 1, pos_y]:
@@ -121,14 +121,14 @@ class API:
                         j = random.randint(0, self.width - 1)
                     self._sheet[i][j] = Encoder.num_mine
                     self._sheet[y][x] = 0
-        
+
         # make sure to reset sheet except newly created mines
         for y in range(0, self.height):
             for x in range(0, self.width):
                 if not self.encoder.is_mine(self._sheet[y][x]):
                     self._sheet[y][x] = 0
-        
-        # calculate the numeric score of each tile 
+
+        # calculate the numeric score of each tile
         for y in range(0, self.height):
             for x in range(0, self.width):
                 if not self.encoder.is_mine(self._sheet[y][x]):
@@ -137,7 +137,7 @@ class API:
                             if self.tile_valid(i, j) and self.encoder.is_mine(self._sheet[i][j]):
                                 self._sheet[y][x] += 1
         self._timer = time.time()
-    
+
     @valid_attempt
     def tile_open(self, y, x):
         """ Opens a tile based on given coordinate. """
@@ -155,7 +155,7 @@ class API:
             if tile['value'] == 0:
                 return self._tile_open_adjacent(y, x, [tile])
         return [tile]
-    
+
     def _tile_open_adjacent(self, y, x, opened):
         if self.tile_valid(y, x):
             if self.encoder.is_mine(self._sheet[y][x]):
@@ -187,7 +187,7 @@ class API:
     def is_game_over(self):
         """ Returns True if game is over False otherwise. """
         return self._is_game_over
-    
+
     @property
     def is_game_done(self):
         """ Returns True if game is over False otherwise. """
@@ -208,7 +208,7 @@ class API:
     @property
     def mines(self):
         return self._mines
-    
+
     @property
     def sheet(self):
         return self._sheet
@@ -252,13 +252,13 @@ class Encoder:
             '7' : 7,
             '8' : 8,
         }
-    
+
     def ascii2num(self, string):
         try:
             return self._ascii2num[str(string)]
         except KeyError:
             raise KeyError('Argument "string" can not be encoded {}'.format(string))
-    
+
     def num2ascii(self, integer):
         try:
             return self._num2ascii[int(integer)]
@@ -276,7 +276,7 @@ class Encoder:
         if type(arg) == str:
             return True if arg == self.ascii_tile else False
         return True if arg == self.num_tile else False
-    
+
     def is_mine(self, arg):
         if type(arg) == str:
             return True if arg == self.ascii_mine else False

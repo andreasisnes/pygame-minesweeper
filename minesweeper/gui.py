@@ -18,7 +18,7 @@ class Board:
 
     def create_frame(self, screen):
         pass
-    
+
     def draw(self, screen):
         for m in self.modules:
             m.draw(screen)
@@ -47,7 +47,7 @@ class BoardScore:
 
     def game_reset(self):
         self.__init__(self.api, self.marked, self.x_score, self.y_score)
-    
+
     def draw(self, screen):
         self.draw_score(screen)
         self.draw_timer(screen)
@@ -117,7 +117,7 @@ class BoardFace:
             self.img = self.faces['B)']
         elif self.img == self.faces[':)']:
             self.img = self.faces[':o']
-    
+
     def mouse_on_face(self, x, y):
         return True if (y >= self.y and y <= self.y + self.faces.height) and (x >= self.x and x <= self.x + self.faces.width) else False
 
@@ -137,7 +137,7 @@ class BoardGame:
     def game_reset(self):
         self.api.game_reset()
         self.__init__(self.api, self.x_offset, self.y_offset)
-    
+
     def game_new(self, width, height, mines):
         self.api.game_new(width, height, mines)
         self.__init__(self.api)
@@ -167,7 +167,7 @@ class BoardGame:
     def mouse_down_left(self, y, x):
         if self.api.is_game_over or not self.api.tile_valid(y, x):
             return
-        
+
         self.click = (y, x)
         if self.board[y][x] == self.tiles[self.api.encoder.ascii_tile]:
             self.board[y][x] = self.tiles['0']
@@ -177,14 +177,14 @@ class BoardGame:
     def mouse_down_right(self, y, x):
         if self.api.is_game_over or not self.api.tile_valid(y, x):
             return
-        
+
         if self.board[y][x] == self.tiles[self.api.encoder.ascii_tile]:
             self.board[y][x] = self.tiles['f']
         elif self.board[y][x] == self.tiles['f']:
             self.board[y][x] = self.tiles['?']
         elif self.board[y][x] == self.tiles['?']:
             self.board[y][x] = self.tiles[self.api.encoder.ascii_tile]
-    
+
     def mouse_up_left(self, y, x):
         if self.api.is_game_over or self.click is None:
             pass
@@ -207,15 +207,15 @@ class BoardGame:
                 self.board[y][x] = self.tiles[self.api.encoder.ascii_tile]
         if self.api.is_game_done:
             self.game_done()
-        
+
         self.click = None
-    
+
     def marked(self):
         c = 0
         for row in self.board:
             c += row.count(self.tiles['f'])
         return self.api.mines - c
-    
+
     def mouse_up_right(self, y, x):
         if self.api.is_game_done:
             self.game_done()
@@ -226,13 +226,13 @@ class BoardGame:
             self.mouse_down_left(y, x)
         elif event.button == 3:
             self.mouse_down_right(y, x)
-    
+
     def mouse_up(self, event):
         y, x = self.mouse_tile(event.pos)
         if event.button == 1:
             self.mouse_up_left(y, x)
         elif event.button == 3:
             self.mouse_up_right(y, x)
-    
+
     def mouse_tile(self, pos):
         return ((pos[1] - self.y_offset) // 16, (pos[0] - self.x_offset)// 16)
