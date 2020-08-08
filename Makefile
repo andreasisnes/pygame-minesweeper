@@ -1,30 +1,21 @@
-.PHONY: all run egg test coverage clean
+ENV=pipenv
+
+.PHONY: init run test egg clean
 
 all: run
 
+init:
+	@$(ENV) sync
+	@$(ENV) run pre-commit install
+
 run:
-	@python app
-
-dep:
-	@pip install -r requirements.txt
-
-egg:
-	@python setup.py sdist bdist_wheel
-
-egg-check: egg
-	@twine check dist/*
+	@python minesweeper
 
 test:
-	@pytest tests
+	@$(ENV) run pytest --cov=minesweeper tests
 
-coverage:
-	@pytest --cov=app tests/
-
-pypi-test: egg-check
-	@twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-
-pypi-prod: egg-check
-	@twine upload dist/*
+egg:
+	@$(ENV) run python setup.py sdist bdist_wheel
 
 clean:
 	@find . -type f -name ".mypy_cache" -print0 | xargs -r0 -- rm -r
