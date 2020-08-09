@@ -19,7 +19,7 @@ setup(
     version=metadata("version"),
     packages=find_packages(exclude=("tests", "screenshots")),
     url="https://github.com/andreasisnes/Elitekollektivet.Minesweeper",
-    install_requires=["pygame"],
+    install_requires=["pygame", "pygame-minesweeper-core", "pygame-minesweeper-sprites"],
     entry_points={
         "console_scripts": ["minesweeper=minesweeper.__main__:main"],
     },
