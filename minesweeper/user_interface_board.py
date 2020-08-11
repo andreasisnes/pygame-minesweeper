@@ -92,7 +92,7 @@ class UserInterfaceBoard:
 
     def mouse_up(self, event):
         y, x = self.mouse_tile(*event.pos)
-        if self._core.tile_valid(y, x) and self._click is not None and not self._core.is_game_over:
+        if self._click is not None and not self._core.is_game_over:
             if event.button == BUTTON_LEFT:
                 self.mouse_up_left(y, x)
             if event.button == BUTTON_RIGHT:

@@ -5,9 +5,9 @@ import pygame
 
 class UserInterfaceScore:
     max_score = "999"
-    def __init__(self, board: core.Board, sprites: sprites.ScoreBuilder, offset: int, flagged : Callable[[], int], white_color=(255, 255, 255), dark_grey_color=(128, 128, 128)):
+    def __init__(self, board: core.Board, sprites: sprites.score.Score, offset: int, flagged : Callable[[], int], white_color=(255, 255, 255), dark_grey_color=(128, 128, 128)):
         self._board = board
-        self._sprites = sprites.build()
+        self._sprites = sprites
         self._flagged = flagged
         self._offset = int(offset) * 2
         self._white_color = white_color

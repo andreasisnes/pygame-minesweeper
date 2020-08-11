@@ -16,16 +16,16 @@ except ImportError:
     from user_interface_frame import UserInterfaceFrame
 
 class UserInterface:
-    def __init__(self, rows: int, cols: int, mines: int, shadow=2, grey=5):
+    def __init__(self, rows: int, cols: int, mines: int, shadow=2, grey=5, tile_sprite=sprites.TileBuilder(), score_sprite=sprites.ScoreBuilder(), face_sprite=sprites.FaceBuilder()):
         frame = UserInterfaceFrame(shadow=shadow, grey=grey)
         self._screen = self.init_screen(rows, cols, frame.offset)
         frame.draw(self._screen, rows * sprites.TileBuilder().build().mine.get_height())
         self._board = core.Board(rows, cols, mines)
-        tmp = UserInterfaceBoard(self._board, sprites.TileBuilder().build(), frame.offset)
+        tmp = UserInterfaceBoard(self._board, tile_sprite.build(), frame.offset)
         self._components = [
             tmp,
-            UserInterfaceScore(self._board, sprites.ScoreBuilder(), frame.offset, tmp.flagged),
-            UserInterfaceFace(self._board, sprites.FaceBuilder().build(), frame.offset, self.game_reset),
+            UserInterfaceScore(self._board, score_sprite.build(), frame.offset, tmp.flagged),
+            UserInterfaceFace(self._board, face_sprite.build(), frame.offset, self.game_reset),
         ]
 
     def game_reset(self):
