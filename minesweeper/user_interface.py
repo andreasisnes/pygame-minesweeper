@@ -19,7 +19,7 @@ class UserInterface:
     def __init__(self, rows: int, cols: int, mines: int, shadow=2, grey=5):
         frame = UserInterfaceFrame(shadow=shadow, grey=grey)
         self._screen = self.init_screen(rows, cols, frame.offset)
-        frame.draw(self._screen)
+        frame.draw(self._screen, rows * sprites.TileBuilder().build().mine.get_height())
         self._board = core.Board(rows, cols, mines)
         tmp = UserInterfaceBoard(self._board, sprites.TileBuilder().build(), frame.offset)
         self._components = [
@@ -48,5 +48,5 @@ class UserInterface:
         tiles = sprites.TileBuilder().build().eight
         score = sprites.ScoreBuilder().build().eight
         width = cols * tiles.get_width() + offset * 2
-        height = rows * tiles.get_height() + score.get_height() + offset * 3
+        height = rows * tiles.get_height() + score.get_height() + offset * 5
         return pygame.display.set_mode((width, height))

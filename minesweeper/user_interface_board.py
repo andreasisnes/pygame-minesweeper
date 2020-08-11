@@ -40,7 +40,7 @@ class UserInterfaceBoard:
 
     def mouse_down(self, event):
         y, x = self.mouse_tile(*event.pos)
-        if self._core.tile_valid(y, x) and not self._core.is_game_over:
+        if self._core.tile_valid(y, x) and not (self._core.is_game_over or self._core.is_game_finished):
             if event.button == BUTTON_LEFT:
                 self.mouse_down_left(y, x)
             if event.button == BUTTON_RIGHT:

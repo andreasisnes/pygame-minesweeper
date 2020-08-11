@@ -9,7 +9,7 @@ class UserInterfaceFace:
     def __init__(self, board: core.Board, sprites: sprites.face.Face, offset: int, game_reset: Callable[[], None]):
         self._core = board
         self._sprites = sprites
-        self._offset = offset
+        self._offset = int(offset)
         self._img = self._sprites.smile
         self._update = True
         self._game_reset = game_reset
@@ -67,7 +67,7 @@ class UserInterfaceFace:
 
     @property
     def y(self) -> int:
-        return self._offset
+        return self._offset * 2
 
     def on_face(self, x, y):
         return True if (y >= self.y and y <= self.y + self.img.get_height()) and (x >= self.x and x <= self.x + self.img.get_width()) else False
