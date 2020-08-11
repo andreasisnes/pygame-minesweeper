@@ -48,6 +48,6 @@ class UserInterfaceScore:
         flagged = str(int(flagged)).zfill(3)
         if len(flagged) > 3:
             flagged = UserInterfaceScore.max_score
-        w, h = pygame.display.get_surface().get_size()
+        w, _ = pygame.display.get_surface().get_size()
         self.draw_shadow(screen, w - self._offset - self._sprites.one.get_width() * 3, self._offset)
         [screen.blit(tile, (self._offset + idx * tile.get_width(), self._offset)) for idx, tile in enumerate(self._sprites[flagged])]

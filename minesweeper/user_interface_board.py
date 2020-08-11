@@ -5,17 +5,18 @@ from pygame.locals import BUTTON_LEFT, BUTTON_RIGHT
 import pygame
 
 class UserInterfaceBoard:
-    def __init__(self, board: core.Board, sprites: sprites.tile.Tile, offset: int):
+    def __init__(self, board: core.Board, sprites: sprites.tile.Tile, offset: int, callback):
         self._core = board
         self._sprites = sprites
         self._offset = int(offset)
         self._flagged = 0
         self._click = None
+        self._callback = callback
         self._mapper = UserInterfaceBoardMapper(self._sprites)
         self._tiles = [[self._mapper[j] for j in i] for i in self._core._tiles]
 
     def game_reset(self):
-        self.__init__(self._core, self._sprites, self._offset)
+        self.__init__(self._core, self._sprites, self._offset, self._callback)
 
     def game_over(self):
         for i, row in enumerate(self._tiles):
@@ -28,7 +29,7 @@ class UserInterfaceBoard:
                         self._tiles[i][j] = self._sprites.mine_red_cross
 
     def game_finished(self):
-        pass
+        self._callback(self._core.timer)
 
     def draw(self, screen):
         _, height = pygame.display.get_surface().get_size()

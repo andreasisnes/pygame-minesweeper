@@ -5,7 +5,7 @@ sys.stdout = sys.__stdout__
 import argparse
 import appdirs
 import json
-from os.path import join
+from os.path import join, exists
 from pathlib import Path
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, MOUSEBUTTONUP, MOUSEBUTTONDOWN
 from minesweeper.sprites import *
@@ -38,13 +38,15 @@ class ShowHighScore(argparse.Action):
         directory = appdirs.AppDirs("pygame-minesweeper").user_data_dir
         Path(directory).mkdir(parents=True, exist_ok=True)
         score = join(directory, "high-score.json")
+        if not exists(score):
+            with open(score, "w+") as f:
+                json.dump({}, f)
         with open(score, "r+") as f:
-            try:
-                t = json.load(f)
-                for key, value in t.items():
-                    self.print_score(key, value)
-            except json.decoder.JSONDecodeError:
-                print("No Games are played")
+            t = json.load(f)
+            if len(t.keys()) == 0:
+                print("No games are played")
+            for key, value in t.items():
+                self.print_score(key, value)
         parser.exit()
 
     def print_score(self, key, value):
@@ -57,6 +59,24 @@ class ShowHighScore(argparse.Action):
             else:
                 print(f"#{1 + entry:02} {value[entry]}")
 
+def update_high_score(entry, value):
+    directory = appdirs.AppDirs("pygame-minesweeper").user_data_dir
+    Path(directory).mkdir(parents=True, exist_ok=True)
+    score_file = join(directory, "high-score.json")
+    scores = {}
+    value = float(value)
+    with open(score_file, "r+") as f:
+        try:
+            scores = json.load(f)
+            if entry not in scores:
+                scores[entry] = [value]
+            else:
+                scores[entry].append(value)
+            scores[entry].sort()
+        except json.decoder.JSONDecodeError:
+            scores[entry] = [value]
+    with open(score_file, "w+") as f:
+        json.dump(scores, f)
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -83,13 +103,13 @@ def main():
         face_sprite = FaceBuilder(FaceSheets(args.sprite))
 
     if args.difficulty == "basic":
-        game(UserInterface(10, 10, 10, tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
+        game(UserInterface(10, 10, 10, lambda x: update_high_score("basic", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
     elif args.difficulty == "intermediate":
-        game(UserInterface(16, 16, 40, tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
+        game(UserInterface(16, 16, 40, lambda x: update_high_score("intermediate", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
     elif args.difficulty == "expert":
-        game(UserInterface(30, 16, 99, tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
+        game(UserInterface(30, 16, 99, lambda x: update_high_score("expert", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
     else:
-        game(UserInterface(args.rows, args.cols, args.mines, tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
+        game(UserInterface(args.rows, args.cols, args.mines, lambda x: update_high_score(f"custom {args.rows}x{args.cols}:{args.mines}", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
 
 def game(ui):
     clock = pygame.time.Clock()
