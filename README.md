@@ -78,8 +78,8 @@ CUSTOM 10X10:5
 #10 -
 ```
 
-## Start a game with different Spritesheet
-The `--tile-sprite`, `--face-sprite` and `--score-sprite` parameters defines a set of spritesheets which are available from this [python package](https://github.com/andreasisnes/Elitekollektivet.Minesweeper.Sprites).
+## Start a game with different a Sprite sheet
+The `--tile-sprite`, `--face-sprite` and `--score-sprite` parameters defines a set of sprite sheets which are available from this [python package](https://github.com/andreasisnes/Elitekollektivet.Minesweeper.Sprites).
 
 ```bash
 # if $HOME/.local/bin/ is defined in $PATH
@@ -104,8 +104,9 @@ optional arguments:
   --show-high-score
 ```
 
-To start a *Expert* game with a full monochrome spritesheet. If the --sprite flag is set it will override the other flags like `--tile-sprite`, `--score-sprite` and `--face-sprite`.
+If the --sprite flag is set it will override the other flags like `--tile-sprite`, `--score-sprite` and `--face-sprite`.
 ```bash
+# Starting an *Expert* game with a full monochrome spritesheet
 minesweeper expert --sprite=monochrome
 # or
 python -m minesweeper expert --sprite=monochrome
