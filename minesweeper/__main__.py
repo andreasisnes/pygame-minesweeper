@@ -110,8 +110,8 @@ def main():
     elif args.difficulty == "expert":
         game(
             UserInterface(
-                30,
                 16,
+                30,
                 99,
                 lambda x: HighScoreUpdate("expert", x),
                 tile_sprite=tile_sprite,
