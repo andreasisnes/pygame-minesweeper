@@ -29,13 +29,15 @@ class HighScoreShow(Action):
             else:
                 print(f"#{1 + entry:02} {str(timedelta(seconds=value[entry]))}")
 
+
 def HighScoreInit():
     Path(HIGHSCORE_DIR).mkdir(parents=True, exist_ok=True)
     if not exists(HIGHSCORE_FILE):
         with open(HIGHSCORE_FILE, "w+") as f:
             json.dump({}, f)
 
-def HighScoreUpdate(entry : str, value: float):
+
+def HighScoreUpdate(entry: str, value: float):
     scores, value = {}, float(value)
     with open(HIGHSCORE_FILE, "r+") as f:
         try:

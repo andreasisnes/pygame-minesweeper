@@ -6,7 +6,13 @@ import pygame
 
 
 class UserInterfaceFace:
-    def __init__(self, board: core.Board, sprites: sprites.face.Face, offset: int, game_reset: Callable[[], None]):
+    def __init__(
+        self,
+        board: core.Board,
+        sprites: sprites.face.Face,
+        offset: int,
+        game_reset: Callable[[], None],
+    ):
         self._core = board
         self._sprites = sprites
         self._offset = int(offset)
@@ -16,7 +22,7 @@ class UserInterfaceFace:
         self._click = None
 
     @property
-    def img (self):
+    def img(self):
         return self._img
 
     @img.setter
@@ -51,7 +57,11 @@ class UserInterfaceFace:
     def mouse_up(self, event):
         if event.button != BUTTON_LEFT:
             return
-        if self.on_face(*event.pos) and self._click != None and self.on_face(*self._click):
+        if (
+            self.on_face(*event.pos)
+            and self._click != None
+            and self.on_face(*self._click)
+        ):
             self._game_reset()
         elif self._core.is_game_over:
             self.img = self._sprites.dead
@@ -70,4 +80,9 @@ class UserInterfaceFace:
         return self._offset * 2
 
     def on_face(self, x, y):
-        return True if (y >= self.y and y <= self.y + self.img.get_height()) and (x >= self.x and x <= self.x + self.img.get_width()) else False
+        return (
+            True
+            if (y >= self.y and y <= self.y + self.img.get_height())
+            and (x >= self.x and x <= self.x + self.img.get_width())
+            else False
+        )
