@@ -7,7 +7,14 @@ sys.stdout = sys.__stdout__
 import argparse
 from os.path import exists
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, MOUSEBUTTONUP, MOUSEBUTTONDOWN
-from minesweeper.sprites import *
+from minesweeper.sprites import (
+    TileBuilder,
+    TileSheets,
+    ScoreBuilder,
+    ScoreSheets,
+    FaceBuilder,
+    FaceSheets,
+)
 
 try:
     from .user_interface import UserInterface
@@ -43,10 +50,12 @@ def parse_args():
         description="""
     Minesweeper
 
-    basic           : (10x10) - 10 mines
-    intermediate    : (16x16) - 40 mines
-    expert          : (30x16) - 99 mines
-    """
+    basic        : 10 x 10   - 10 mines
+    intermediate : 16 x 16   - 40 mines
+    expert       : 16 x 30   - 99 mines
+    custom       : ROWSxCOLS - MINES mines
+    """,
+        formatter_class=argparse.RawTextHelpFormatter,
     )
     parser.add_argument(
         "difficulty",
