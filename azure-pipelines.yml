@@ -21,6 +21,9 @@ stages:
       displayName: 'Using Python ${{ variables.pythonVersion }}'
       inputs:
         versionSpec: $(pythonVersion)
+    - script: |
+        python -m pip install -U pipenv
+        make init
     - task: FileTransform@2
       displayName: 'Setting metadata'
       inputs:
