@@ -39,7 +39,15 @@ def teardown():
 
 
 def parse_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="""
+    Minesweeper
+
+    basic           : (10x10) - 10 mines
+    intermediate    : (16x16) - 40 mines
+    expert          : (30x16) - 99 mines
+    """
+    )
     parser.add_argument(
         "difficulty",
         type=str,

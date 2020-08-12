@@ -9,9 +9,11 @@ def read(fname):
     with open(join(dirname(__file__), fname)) as f:
         return f.read()
 
+
 def metadata(value):
     with open(join(dirname(__file__), "metadata.json")) as f:
         return load(f)[value]
+
 
 setup(
     # Package
@@ -19,17 +21,18 @@ setup(
     version=metadata("version"),
     packages=find_packages(exclude=("tests", "screenshots")),
     url="https://github.com/andreasisnes/Elitekollektivet.Minesweeper",
-    install_requires=["pygame", "pygame-minesweeper-core", "pygame-minesweeper-sprites"],
-    entry_points={
-        "console_scripts": ["minesweeper=minesweeper.__main__:main"],
-    },
+    install_requires=[
+        "pygame",
+        "pygame-minesweeper-core",
+        "pygame-minesweeper-sprites",
+        "appdirs",
+    ],
+    entry_points={"console_scripts": ["minesweeper=minesweeper.__main__:main"],},
     zip_safe=False,
     include_package_data=True,
-
     # Contact
     author="Andreas Isnes Nilsen",
     author_email="andreas.isnes@gmail.com",
-
     # Description
     description="Minesweeper game implemented in python using pygame",
     long_description=read("README.md"),

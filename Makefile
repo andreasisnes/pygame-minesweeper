@@ -1,18 +1,22 @@
 ENV=pipenv
-
-.PHONY: init run test egg clean
-
-all: run
+SRC=minesweeper
+.PHONY: init run-basic run-intermediate run-expert test egg clean
 
 init:
 	@$(ENV) sync
 	@$(ENV) run pre-commit install
 
-run:
-	@python minesweeper
+run-basic:
+	@$(ENV) run python $(SRC) basic
+
+run-intermediate:
+	@$(ENV) run python $(SRC) intermediate
+
+run-expert:
+	@$(ENV) run python $(SRC) expert
 
 test:
-	@$(ENV) run pytest --cov=minesweeper tests
+	@$(ENV) run pytest --cov=$(SRC) tests
 
 egg:
 	@$(ENV) run python setup.py sdist bdist_wheel
