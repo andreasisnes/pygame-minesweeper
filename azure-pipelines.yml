@@ -24,6 +24,7 @@ stages:
     - script: |
         python -m pip install -U pipenv
         make init
+      displayName: 'Restoring dependencies'
     - task: FileTransform@2
       displayName: 'Setting metadata'
       inputs:
