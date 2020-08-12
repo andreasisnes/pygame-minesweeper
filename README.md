@@ -10,7 +10,10 @@ Minesweeper is a single-player puzzle computer game. The objective of the game i
 
 This simple implementation of minesweeper is done in Python using the game library pygame.
 
-The core functionality of the game can be found [here](https://github.com/andreasisnes/Elitekollektivet.Minesweeper.Core) and the python package for the spritesheet can be found [here](https://github.com/andreasisnes/Elitekollektivet.Minesweeper.Sprites)
+The core functionality of the game can be found [here](https://github.com/andreasisnes/Elitekollektivet.Minesweeper.Core) and the python package for the sprite sheet can be found [here](https://github.com/andreasisnes/Elitekollektivet.Minesweeper.Sprites)
+
+# Motivation
+The motivation of these minesweeper projects is to learn the tooling around python projects, how to create CI/CD pipelines for python projects, and distributing python eggs.
 
 # Getting Started
 
