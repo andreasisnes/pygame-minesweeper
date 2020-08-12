@@ -7,15 +7,12 @@ verify_ssl = true
 pylint = "*"
 
 [packages]
-pytest = "*"
-pytest-cov = "*"
 setuptools = "*"
 wheel = "*"
 pre-commit = "*"
-pytest-azurepipelines = "*"
 pygame-minesweeper-core = "*"
 pygame-minesweeper-sprites = "*"
 appdirs = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.6"

@@ -7,7 +7,7 @@ variables:
   artifactName: 'python-egg'
   version: $(Build.BuildNumber)
   pypiIndex: pygame-minesweeper
-  pythonVersion: '3.8'
+  pythonVersion: '3.6'
 
 stages:
 - stage: ContinuousIntegration
