@@ -78,7 +78,7 @@ CUSTOM 10X10:5
 #10 -
 ```
 
-## Start a game with different a sprite sheet
+## Start a game with a different sprite sheet
 The `--tile-sprite`, `--face-sprite`, and `--score-sprite` parameters define a set of sprite sheets that are available from this [python package](https://github.com/andreasisnes/Elitekollektivet.Minesweeper.Sprites).
 
 ```bash
