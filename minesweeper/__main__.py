@@ -3,18 +3,16 @@ sys.stdout = None
 import pygame
 sys.stdout = sys.__stdout__
 import argparse
-import appdirs
-import json
-from os.path import join, exists
-from pathlib import Path
+from os.path import exists
 from pygame.locals import QUIT, KEYDOWN, K_ESCAPE, MOUSEBUTTONUP, MOUSEBUTTONDOWN
 from minesweeper.sprites import *
 
 try:
     from .user_interface import UserInterface
+    from .util import HighScoreInit, HighScoreShow, HighScoreUpdate
 except ImportError:
     from user_interface import UserInterface
-
+    from util import HighScoreInit, HighScoreShow, HighScoreUpdate
 
 def init(mainf):
     def initf():
@@ -24,6 +22,7 @@ def init(mainf):
     return initf
 
 def setup():
+    HighScoreInit()
     pygame.init()
     pygame.display.init()
     pygame.font.init()
@@ -31,52 +30,6 @@ def setup():
 
 def teardown():
     pygame.quit()
-
-
-class ShowHighScore(argparse.Action):
-    def __call__(self, parser, namespace, values, option_string):
-        directory = appdirs.AppDirs("pygame-minesweeper").user_data_dir
-        Path(directory).mkdir(parents=True, exist_ok=True)
-        score = join(directory, "high-score.json")
-        if not exists(score):
-            with open(score, "w+") as f:
-                json.dump({}, f)
-        with open(score, "r+") as f:
-            t = json.load(f)
-            if len(t.keys()) == 0:
-                print("No games are played")
-            for key, value in t.items():
-                self.print_score(key, value)
-        parser.exit()
-
-    def print_score(self, key, value):
-        print("\n")
-        print(key.upper())
-        print("-----")
-        for entry in range(0, 10):
-            if entry >= len(value):
-                print(f"#{1 + entry:02} -")
-            else:
-                print(f"#{1 + entry:02} {value[entry]}")
-
-def update_high_score(entry, value):
-    directory = appdirs.AppDirs("pygame-minesweeper").user_data_dir
-    Path(directory).mkdir(parents=True, exist_ok=True)
-    score_file = join(directory, "high-score.json")
-    scores = {}
-    value = float(value)
-    with open(score_file, "r+") as f:
-        try:
-            scores = json.load(f)
-            if entry not in scores:
-                scores[entry] = [value]
-            else:
-                scores[entry].append(value)
-            scores[entry].sort()
-        except json.decoder.JSONDecodeError:
-            scores[entry] = [value]
-    with open(score_file, "w+") as f:
-        json.dump(scores, f)
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -88,7 +41,7 @@ def parse_args():
     parser.add_argument("--score-sprite", type=str, choices=ScoreSheets.__sheets__, default=ScoreSheets.two_thousand)
     parser.add_argument("--face-sprite", type=str, choices=FaceSheets.__sheets__, default=FaceSheets.two_thousand)
     parser.add_argument("--sprite", type=str, choices=FaceSheets.__sheets__)
-    parser.add_argument("--show-high-score", nargs=0, action=ShowHighScore)
+    parser.add_argument("--show-high-score", nargs=0, action=HighScoreShow)
     return parser.parse_args()
 
 @init
@@ -103,15 +56,15 @@ def main():
         face_sprite = FaceBuilder(FaceSheets(args.sprite))
 
     if args.difficulty == "basic":
-        game(UserInterface(10, 10, 10, lambda x: update_high_score("basic", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
+        game(UserInterface(10, 10, 10, lambda x: HighScoreUpdate("basic", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
     elif args.difficulty == "intermediate":
-        game(UserInterface(16, 16, 40, lambda x: update_high_score("intermediate", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
+        game(UserInterface(16, 16, 40, lambda x: HighScoreUpdate("intermediate", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
     elif args.difficulty == "expert":
-        game(UserInterface(30, 16, 99, lambda x: update_high_score("expert", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
+        game(UserInterface(30, 16, 99, lambda x: HighScoreUpdate("expert", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
     else:
-        game(UserInterface(args.rows, args.cols, args.mines, lambda x: update_high_score(f"custom {args.rows}x{args.cols}:{args.mines}", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
+        game(UserInterface(args.rows, args.cols, args.mines, lambda x: HighScoreUpdate(f"custom {args.rows}x{args.cols}:{args.mines}", x), tile_sprite=tile_sprite, score_sprite=score_sprite, face_sprite=face_sprite))
 
-def game(ui):
+def game(ui: UserInterface):
     clock = pygame.time.Clock()
     while True:
         clock.tick(60)
