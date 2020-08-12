@@ -1,6 +1,7 @@
 [![Build Status](https://dev.azure.com/andreasisnes/Elitekollektivet/_apis/build/status/Elitekollektivet.Minesweeper/Elitekollektivet.Minesweeper?branchName=master)](https://dev.azure.com/andreasisnes/Elitekollektivet/_build/latest?definitionId=11&branchName=master)
 [![PyPI - License](https://img.shields.io/pypi/l/pygame-minesweeper)](https://github.com/andreasisnes/Elitekollektivet.Minesweeper/blob/master/LICENSE)
 [![PyPI](https://img.shields.io/pypi/v/pygame-minesweeper)](https://pypi.org/project/pygame-minesweeper/)
+[![Downloads](https://pepy.tech/badge/pygame-minesweeper)](https://pepy.tech/project/pygame-minesweeper)
 
 # Minesweeper
 Minesweeper is a single-player puzzle computer game. The objective of the game is to clear a rectangular board containing hidden "mines" or bombs without detonating any of them, with help from clues about the number of neighboring mines in each field. The game originates from the 1960s, and has been written for many computing platforms in use today. It has many variations and offshoots.
