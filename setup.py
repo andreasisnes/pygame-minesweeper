@@ -25,9 +25,12 @@ setup(
         "pygame-minesweeper-sprites",
         "appdirs",
     ],
-    entry_points={"console_scripts": ["minesweeper=minesweeper.__main__:main"],},
+    entry_points={
+        "console_scripts": [
+            "minesweeper = minesweeper.__main__:main"
+        ],
+    },
     zip_safe=False,
-    include_package_data=True,
     # Contact
     author="Andreas Isnes Nilsen",
     author_email="andreas.isnes@gmail.com",

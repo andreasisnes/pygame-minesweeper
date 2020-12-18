@@ -18,7 +18,7 @@ run-expert:
 test:
 	@$(ENV) run pytest --cov=$(SRC) tests
 
-egg:
+egg: clean
 	@$(ENV) run python setup.py sdist bdist_wheel
 
 clean:
